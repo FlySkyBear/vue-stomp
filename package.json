@@ -1,0 +1,29 @@
+{
+  "name": "vue-stomp",
+  "version": "1.0.0",
+  "description": "stomp over websocket in vue",
+  "main": "index.js",
+  "scripts": {
+    "test": "test vue-stomp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FlySkyBear/vue-stomp.git"
+  },
+  "keywords": [
+    "vue",
+    "stomp",
+    "websocket"
+  ],
+  "author": "WuJianLin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FlySkyBear/vue-stomp/issues"
+  },
+  "homepage": "https://github.com/FlySkyBear/vue-stomp#readme",
+  "devDependencies": {
+    "sockjs-client": "^1.1.1",
+    "webstomp-client": "^1.0.3",
+    "ws": "^1.1.1"
+  }
+}
