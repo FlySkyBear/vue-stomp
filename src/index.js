@@ -1,20 +1,13 @@
 import Stomp from "webstomp-client";
 import Sockjs from "sockjs-client";
-import WebSocket from "ws";
 
 export default {
 
 	install(Vue, serverEndPoint, opts) {
 		const keyPrefix = "_";
 
-        let socket = null;
-        let sep = serverEndPoint;
-        if(sep.search('/ws') >= 0 ){
-            this.server = sep.replace("http://", "ws://");
-            socket = new WebSocket(sep);
-        }else{
-            socket = new SockJS(sep);
-        }
+        let socket = new SockJS(serverEndPoint);
+        
         let stompClient = Stomp.over(socket);
 
         // 设置监视回调的KEY前缀（防数字化）

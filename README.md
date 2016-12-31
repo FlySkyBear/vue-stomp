@@ -44,7 +44,7 @@ Use it in your components:
 		  		this.$stompClient.setTimeoutCallback(timeout);    
 			},
 			
-			timeout() {		  	
+			timeout(orgCmd) {		  	
 				...
 	 
 			},
