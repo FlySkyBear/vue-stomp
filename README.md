@@ -38,21 +38,21 @@ Use it in your components:
 <script>
 	export default {
 		
-		methods: {
-			init() {
-		  		// Emit the server side
-		  		this.$stompClient.setTimeoutCallback(timeout);    
-			},
+		methods: {			
 			
-			timeout(orgCmd) {		  	
-				...
-	 
-			},
 			send(){
 				this.$stompClient.sendWithMonitor(destination, body, 3000, invokeId, func);
 			}
 		},
- 
+ 		stompClient:{
+ 			monitorIntervalTime: 100,
+ 			timeout(orgCmd) {		  	
+				...
+			},
+			onMessageWithMonitor(frame){
+				...
+			}
+ 		}
 	};
 
 </script>
