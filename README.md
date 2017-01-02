@@ -26,7 +26,8 @@ or connect to other address:
 Vue.use(VueStomp, "http://otherserver:8080/endpoint");
 ```
 
-
+##Memo
+WM: WithMonitor
 
 Use it in your components:
 ```html
@@ -51,7 +52,7 @@ Use it in your components:
                 "passcode": 'guest',
                 // additional header
               };
-              this.connetWithMonitor(headers, this.onConnected, this.onFailed);    
+              this.connetWM(headers, this.onConnected, this.onFailed);    
             },
             getInvokeId(){
               let hex = (this.invokeIdCnt++ ).toString(16);
@@ -63,7 +64,7 @@ Use it in your components:
                 let destination = '/exchange/test'
                 let invokeId = this.getInvokeId();
                 let body = msgHead + invokeId + msgBody;
-                this.sendWithMonitor(destination, body, invokeId, this.responseCallback, 3000);
+                this.sendWM(destination, body, invokeId, this.responseCallback, 3000);
             },
             responseCallback(frame){
               console.log("responseCallback msg=>" + frame.body);
@@ -71,7 +72,7 @@ Use it in your components:
                this.removeStompMonitor(invokeId);
             },
             disconnect(){
-              this.disconnetWithMonitor();
+              this.disconnetWM();
             }
         },
         stompClient:{

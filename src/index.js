@@ -12,7 +12,7 @@ export default {
      * 定义送信应答监视函数
      * invokeId: 唯一识别码
      */
-    let sendWithMonitor = function(destination, body = '', invokeId, func, timeout = 3000, headers = {}) {
+    let sendWM = function(destination, body = '', invokeId, func, timeout = 3000, headers = {}) {
       // make sure that the second argument is a function
       if (typeof func !== 'function') {
         throw {
@@ -50,7 +50,7 @@ export default {
     };
 
     // 送信应答监视函数设备为Stomp原型函数
-    Vue.prototype.sendWithMonitor = sendWithMonitor;
+    Vue.prototype.sendWM = sendWM;
 
     // 清除监视函数
     let removeStompMonitor = function(invokeId) {
@@ -69,7 +69,7 @@ export default {
     // 清除监视函数为Stomp原型函数
     Vue.prototype.removeStompMonitor = removeStompMonitor;
 
-    let connetWithMonitor = function(serverEndPoint, ...args){
+    let connetWM = function(serverEndPoint, ...args){
       // 已连接时直接返回，避免多重连接
       if(this.$stompClient && this.$stompClient.connected)
       {
@@ -106,7 +106,7 @@ export default {
       }
     }
     // 带监视的连接函数为Stomp原型函数
-    Vue.prototype.connetWithMonitor = connetWithMonitor;  
+    Vue.prototype.connetWM = connetWM;  
     // 初始参数设置
     let addListeners = function() {
       if (this.$options["stompClient"]) {
@@ -129,7 +129,7 @@ export default {
       }
     };
     // 断开连接处理
-    let disconnetWithMonitor = function(){
+    let disconnetWM = function(){
       // 断开连接
       if( this.$stompClient && this.$stompClient.connected){
         this.$stompClient.disconnect();
@@ -140,12 +140,12 @@ export default {
       this.responseMonitor = null;
 
     };
-    Vue.prototype.disconnetWithMonitor = disconnetWithMonitor;
+    Vue.prototype.disconnetWM = disconnetWM;
 
     // 初始参数移除
     let removeListeners = function() {
       if (this.$options["stompClient"]) {
-        this.disconnetWithMonitor();
+        this.disconnetWM();
 
         delete this.monitorEvents;
 
