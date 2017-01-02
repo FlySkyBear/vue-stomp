@@ -69,6 +69,9 @@ Use it in your components:
               console.log("responseCallback msg=>" + frame.body);
                let invokeId = frame.body.substr(invokeIdIndex, 4);
                this.removeStompMonitor(invokeId);
+            },
+            disconnect(){
+              this.disconnetWithMonitor();
             }
         },
         stompClient:{
