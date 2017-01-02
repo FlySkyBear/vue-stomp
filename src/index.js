@@ -7,7 +7,6 @@ export default {
 		const keyPrefix = "_";
 
         // 设置监视回调的KEY前缀（防数字化）
-        //stompClient.prototype.keyPrefix = keyPrefix;        
         Vue.prototype.keyPrefix = keyPrefix;
         Vue.prototype.serverEndPoint = serverEndPoint;
 
@@ -44,12 +43,10 @@ export default {
 				this.monitorEvents[key] = monitorParm;
 			}
 			// 原始的送信调用
-			//this.send(destination, body, headers);
 			this.$stompClient.send(destination, body, headers);
 		};
 
         // 送信应答监视函数设备为Stomp原型函数
-		//stompClient.prototype.sendWithMonitor = sendWithMonitor;
 		Vue.prototype.sendWithMonitor = sendWithMonitor;
 
 		// 清除监视函数
@@ -67,7 +64,6 @@ export default {
 			}
 		};
 		// 清除监视函数为Stomp原型函数
-		//stompClient.prototype.removeStompMonitor = removeStompMonitor;
 		Vue.prototype.removeStompMonitor = removeStompMonitor;
 
 		let connetWithMonitor = function(...args){
@@ -78,7 +74,6 @@ export default {
 
 			this.$stompClient.connect(...args);
 			// 初始监控队列
-        	//stompClient.monitorEvents = [];
         	this.monitorEvents = [];
 			// 启动监视
 			if(this.responseMonitor == null){
@@ -103,7 +98,6 @@ export default {
 			}
 		}
 		// 带监视的连接函数为Stomp原型函数
-		//stompClient.prototype.connetWithMonitor = connetWithMonitor;
 		Vue.prototype.connetWithMonitor = connetWithMonitor;	
 
         // 初始参数设置
@@ -117,7 +111,6 @@ export default {
 							message : 'The argument[timeout] must be a function.'
 						};
 					}
-		        	//this.$stompClient.prototype.timeoutCallback = conf.timeout;
 		        	this.timeoutCallback = conf.timeout;
 		        }
    
@@ -126,7 +119,6 @@ export default {
 		        if(conf.monitorIntervalTime &&  typeof conf.monitorIntervalTime === 'number' && !isNaN(conf.monitorIntervalTime) ){
 		        	monitorIntervalTime = conf.monitorIntervalTime;
 		        }
-		        //stompClient.prototype.monitorIntervalTime = monitorIntervalTime;
 		        this.monitorIntervalTime = monitorIntervalTime;
 			}
 		};
