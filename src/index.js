@@ -69,6 +69,18 @@ export default {
     // 清除监视函数为Stomp原型函数
     Vue.prototype.removeStompMonitor = removeStompMonitor;
 
+    let reconnErrorCallback = function(errorEvent){
+      if(errorEvent.type == 'close' && this.stompReconnect == true){
+        console.log("reconnErrorCallback reconnect required!");
+        this.reconnecting = true;
+        // 发起连接
+        this.connetWM(this.connectParams.serverEndPoint, this.connectParams.headers,
+           this.connectParams.connectCallback, this.connectParams.errorCallback);
+      }
+      if(this.errorCallback) this.errorCallback(errorEvent);
+    };
+    Vue.prototype.reconnErrorCallback = reconnErrorCallback;
+
     let connetWM = function(serverEndPoint, ...args){
       // 已连接时直接返回，避免多重连接
       if(this.$stompClient && this.$stompClient.connected)
@@ -80,9 +92,36 @@ export default {
       let stompClient = Stomp.over(socket);
       Vue.prototype.$stompClient = stompClient;
 
+      if (this.stompReconnect == true && this.reconnecting != true){
+        switch(args.length){
+          case 3:
+            if (args[1] instanceof Function){
+                let errorCallback = args[2];
+                args[2] = this.reconnErrorCallback.bind(this);
+                this.errorCallback = errorCallback;
+            }
+            break;
+          case 4:
+          default:
+            let errorCallback = args[3];
+            args[3] = this.reconnErrorCallback;
+            this.errorCallback = errorCallback;
+        }
+        // 保存连接参数
+        let [headers, connectCallback, errorCallback] = this.$stompClient._parseConnect(...args);
+        let connectParams = {
+          "serverEndPoint" : serverEndPoint,
+          "headers" : headers,
+          "connectCallback" : connectCallback,
+          "errorCallback" : errorCallback
+        }
+        this.connectParams = connectParams;
+      }
+      this.reconnecting = false;
+
       this.$stompClient.connect(...args);
       // 初始监控队列
-          this.monitorEvents = [];
+      this.monitorEvents = [];
       // 启动监视
       if(this.responseMonitor == null){
         this.responseMonitor = setInterval(() => {
@@ -126,6 +165,10 @@ export default {
           monitorIntervalTime = conf.monitorIntervalTime;
         }
         this.monitorIntervalTime = monitorIntervalTime;
+        // 设置是否要重连
+        if(conf.stompReconnect){
+          this.stompReconnect = conf.stompReconnect;
+        }
       }
     };
     // 断开连接处理

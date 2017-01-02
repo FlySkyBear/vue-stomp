@@ -34,53 +34,58 @@ Use it in your components:
 <script>
     export default {
         data () {
-            return {
-              invokeIdCnt: 0
-            }
+          return {
+            invokeIdCnt: 0
+          }
         },
         methods: {
-            onConnected(frame){
-              console.log('Connected: ' + frame);
-              this.$stompClient.subscribe('/topic/username', this.responseCallback, this.onFailed);
-            },
-            onFailed(frame){
-              console.log('Failed: ' + frame);
-            },         
-            connectSrv(){
-              var headers = {
-                "login": 'guest',
-                "passcode": 'guest',
-                // additional header
-              };
-              this.connetWM(headers, this.onConnected, this.onFailed);    
-            },
-            getInvokeId(){
-              let hex = (this.invokeIdCnt++ ).toString(16);
-              var zero = '0000';
-              var tmp  = 4-hex.length;
-              return zero.substr(0,tmp) + hex;
-            },
-            send(){
-                let destination = '/exchange/test'
-                let invokeId = this.getInvokeId();
-                let body = msgHead + invokeId + msgBody;
-                this.sendWM(destination, body, invokeId, this.responseCallback, 3000);
-            },
-            responseCallback(frame){
-              console.log("responseCallback msg=>" + frame.body);
-               let invokeId = frame.body.substr(invokeIdIndex, 4);
-               this.removeStompMonitor(invokeId);
-            },
-            disconnect(){
-              this.disconnetWM();
-            }
+          onConnected(frame){
+            console.log('Connected: ' + frame);
+            ...
+            this.$stompClient.subscribe('/topic/username', this.responseCallback, this.onFailed);
+          },
+          onFailed(frame){
+            console.log('Failed: ' + frame);
+            ...
+          },         
+          connectSrv(){
+            var headers = {
+              "login": 'guest',
+              "passcode": 'guest',
+              // additional header
+              ...
+            };
+            this.connetWM(headers, this.onConnected, this.onFailed);    
+          },
+          getInvokeId(){
+            let hex = (this.invokeIdCnt++ ).toString(16);
+            var zero = '0000';
+            var tmp  = 4-hex.length;
+            return zero.substr(0,tmp) + hex;
+          },
+          send(){
+              let destination = '/exchange/test'
+              let invokeId = this.getInvokeId();
+              ...
+              let body = msgHead + invokeId + msgBody;
+              this.sendWM(destination, body, invokeId, this.responseCallback, 3000);
+          },
+          responseCallback(frame){
+            console.log("responseCallback msg=>" + frame.body);
+            let invokeId = frame.body.substr(invokeIdIndex, 4);
+            this.removeStompMonitor(invokeId);
+          },
+          disconnect(){
+            this.disconnetWM();
+          }
         },
         stompClient:{
-            monitorIntervalTime: 100,
-            timeout(orgCmd) {              
-                ...
-            }
-         }
+          monitorIntervalTime: 100,
+          stompReconnect: true,
+          timeout(orgCmd) {              
+            ...
+          }
+       }
     };
 
 </script>
