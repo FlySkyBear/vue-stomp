@@ -110,5 +110,5 @@ vue-stomp is available under the [MIT license](https://tldrlegal.com/license/mit
 
 ## Contact
 
-Copyright (C) 2016 FlySkyBear
+Copyright (C) 2016-2020 FlySkyBear
 
