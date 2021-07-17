@@ -19,11 +19,7 @@ https://github.com/FlySkyBear/vue-stomp/archive/master.zip
 Register the plugin, it will connect to `/`
 ```js
 import VueStomp from "vue-stomp";
-Vue.use(VueStomp, endpoint);
-```
-or connect to other address:
-```js
-Vue.use(VueStomp, "http://otherserver:8080/endpoint");
+Vue.use(VueStomp);
 ```
 
 ##Memo
@@ -35,7 +31,8 @@ Use it in your components:
     export default {
         data () {
           return {
-            invokeIdCnt: 0
+            invokeIdCnt: 0,
+            wsUrl = 'http://XXXXXX:YYYY/ZZZZTopic'
           }
         },
         methods: {
@@ -55,7 +52,7 @@ Use it in your components:
               // additional header
               ...
             };
-            this.connetWM(headers, this.onConnected, this.onFailed);    
+            this.connetWM(wsUrl, headers, this.onConnected, this.onFailed);    
           },
           getInvokeId(){
             let hex = (this.invokeIdCnt++ ).toString(16);
@@ -95,11 +92,6 @@ Use it in your components:
 This command will build a distributable version in the `dist` directory.
 ```bash
 npm run build
-```
-
-## Test
-```bash
-npm test
 ```
 
 ## Contribution
